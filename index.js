@@ -7,7 +7,7 @@ inquirer.prompt([
   {
     type: 'input',
     name: 'projectTitle',
-    message: 'What is your projects title?',
+    message: 'What is the title for your project?',
   },
   {
     type: 'input',
@@ -17,7 +17,7 @@ inquirer.prompt([
   {
     type: 'input',
     name: 'installationSteps',
-    message: 'What command should you enter to install dependencies?',
+    message: 'What command should you enter in the terminal to install dependencies?',
   },
   {
     type: 'input',
@@ -35,9 +35,10 @@ inquirer.prompt([
     message: 'What command should be used to run tests?',
   },
   {
-    type: 'input',
+    type: 'list',
     name: 'projectLicense',
     message: 'What license should your project have?',
+    choices: ['no license', 'mit', 'apache', 'agp1']
   },
   {
     type: 'input',
@@ -52,10 +53,29 @@ inquirer.prompt([
 ])
   
 // TODO: Create a function to write README file
-function writeToFile(fileName, data) {}
+.then((answers) => {
+  const templatePath = `${__dirname}/README-template.md`;
+  const readmePath = `${__dirname}/SAMPLEREADME.md`;
 
-// TODO: Create a function to initialize app
-function init() {}
+  
+  fs.readFile(templatePath, 'utf8', (err, data) => {
+    if (err) throw err;
 
-// Function call to initialize app
-init();
+    
+    data = data.replace(/{{ projectTitle }}/g, answers.projectTitle);
+    data = data.replace(/{{ projectDescription }}/g, answers.projectDescription);
+    data = data.replace(/{{ installationSteps }}/g, answers.installationSteps);
+    data = data.replace(/{{ projectUse }}/g, answers.projectUse);
+    data = data.replace(/{{ projectContribute }}/g, answers.projectContribute);
+    data = data.replace(/{{ projectTest }}/g, answers.projectTest);
+    data = data.replace(/{{ projectLicense }}/g, answers.projectLicense);
+    data = data.replace(/{{ userName }}/g, answers.userName);
+    data = data.replace(/{{ userEmail }}/g, answers.userEmail);
+
+    
+    fs.writeFile(readmePath, data, (err) => {
+      if (err) throw err;
+      console.log('README generated successfully!');
+    });
+  });
+});
