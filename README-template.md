@@ -49,6 +49,7 @@
 <br>
 
 # **Questions?**
+If you have any additional questions please feel free to reach out to me via:
 
 Github Profile: https://github.com/{{ userName }} 
 

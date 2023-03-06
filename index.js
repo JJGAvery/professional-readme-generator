@@ -61,14 +61,33 @@ inquirer.prompt([
   fs.readFile(templatePath, 'utf8', (err, data) => {
     if (err) throw err;
 
+    function renderLicenseBadge(projectLicense) {
+      let icon;
+      switch (projectLicense) {
+        case "mit":
+          icon = `![License: MIT](https://img.shields.io/badge/License-MIT-red.svg)`
+          break;
+        case "apache":
+          icon = `![License: apache](https://img.shields.io/badge/License-apache-red.svg)`
+          break;
+        case "agp1":
+          icon = `![License: agp1](https://img.shields.io/badge/License-agp1-red.svg)`
+          break;
+        default:
+          icon = `![License: no license](https://img.shields.io/badge/License-none-red.svg)`
+          break;
+      };
     
+      return icon;
+      };
+
     data = data.replace(/{{ projectTitle }}/g, answers.projectTitle);
     data = data.replace(/{{ projectDescription }}/g, answers.projectDescription);
     data = data.replace(/{{ installationSteps }}/g, answers.installationSteps);
     data = data.replace(/{{ projectUse }}/g, answers.projectUse);
     data = data.replace(/{{ projectContribute }}/g, answers.projectContribute);
     data = data.replace(/{{ projectTest }}/g, answers.projectTest);
-    data = data.replace(/{{ projectLicense }}/g, answers.projectLicense);
+    data = data.replace(/{{ projectLicense }}/g, renderLicenseBadge(answers.projectLicense));
     data = data.replace(/{{ userName }}/g, answers.userName);
     data = data.replace(/{{ userEmail }}/g, answers.userEmail);
 
@@ -79,3 +98,7 @@ inquirer.prompt([
     });
   });
 });
+
+
+
+  
